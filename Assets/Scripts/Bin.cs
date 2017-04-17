@@ -11,7 +11,6 @@ namespace Inventory
             ItemView dragged = eventData.pointerDrag.GetComponent<ItemView>();
             SlotView other = dragged.currentSlot;
             other.data.ClearSlot();
-            other.inventoryView.LoadInventory();
         }
     }
 }

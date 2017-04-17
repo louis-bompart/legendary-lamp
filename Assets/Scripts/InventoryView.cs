@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Inventory
 {
-    public class InventoryView : MonoBehaviour
+    public class InventoryView : MonoBehaviour, IInventoryObserver
     {
         internal InventoryModel model;
         private GridLayoutGroup layout;
@@ -18,7 +18,7 @@ namespace Inventory
         }
         public Inventory inventory;
         // Use this for initialization
-        void Start()
+        void Awake()
         {
             slotViews = new List<SlotView>();
             layout = GetComponent<GridLayoutGroup>();
@@ -35,6 +35,7 @@ namespace Inventory
                 default:
                     break;
             }
+            model.RegisterView(this);
             LoadInventory(true);
         }
 
@@ -47,10 +48,6 @@ namespace Inventory
         void Update()
         {
 
-        }
-        internal void LoadInventory()
-        {
-            LoadInventory(false);
         }
         void LoadInventory(bool resize = false)
         {
@@ -73,6 +70,18 @@ namespace Inventory
             float height = GetComponent<RectTransform>().rect.height - layout.padding.vertical;
             float size = Mathf.Min(width, height) / Mathf.Sqrt(model.slots.Count);
             return new Vector2(size - layout.spacing.x, size - layout.spacing.y);
+        }
+        private void OnDestroy()
+        {
+            model.UnRegisterView(this);
+        }
+        void IInventoryObserver.OnInventoryChange()
+        {
+            LoadInventory();
+            //foreach (SlotView slot in slotViews)
+            //{
+            //    slot.UpdateView();
+            //}
         }
     }
 }

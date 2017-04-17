@@ -28,6 +28,7 @@ namespace Inventory
         }
         public void UpdateView()
         {
+            data = data.model.slots.Find(x => data.id == x.id);
             if (itemView != null)
                 Destroy(itemView);
             if (!data.IsEmpty())
@@ -44,9 +45,6 @@ namespace Inventory
             SlotView other = dragged.currentSlot;
             dragged.currentSlot = this;
             other.data.Swap(data);
-            inventoryView.LoadInventory();
-            if (!inventoryView.Equals(other.inventoryView))
-                other.inventoryView.LoadInventory();
         }
     }
 }

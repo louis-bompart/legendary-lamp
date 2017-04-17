@@ -46,11 +46,13 @@ namespace Inventory
             {
                 foreach (Slot slot in slotToUse)
                 {
-                    if (amount <= 0)
-                        break;
-                    int qteitem = Mathf.Min(amount, slot.IsEmpty() ? item.stackSize : item.stackSize - slot.amount);
-                    slot.AddItem(item, qteitem);
-                    amount -= qteitem;
+                    if (amount > 0)
+                    {
+                        int qteitem = Mathf.Min(amount, slot.IsEmpty() ? item.stackSize : item.stackSize - slot.amount);
+                        slot.AddItem(item, qteitem);
+                        amount -= qteitem;
+                    }
+                    slot.model.FreeSlotReservation(slot);
                 }
                 return true;
             }

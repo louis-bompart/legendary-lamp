@@ -13,6 +13,7 @@ namespace Inventory
         internal Dictionary<Item, int> items;
         private int size;
         internal ItemDatabase database;
+        private List<IInventoryObserver> views;
         public enum Inventory
         {
             Ship,
@@ -23,6 +24,7 @@ namespace Inventory
         public void Awake()
         {
             ItemDatabase.GetInstance(out database);
+            views = new List<IInventoryObserver>();
             items = new Dictionary<Item, int>();
             slots = new List<Slot>();
             reserved = new List<Slot>();
@@ -63,6 +65,24 @@ namespace Inventory
         public bool HasFreeSlot()
         {
             return slots.Exists(x => x.IsEmpty() && !reserved.Contains(x));
+        }
+
+        internal void UnRegisterView(InventoryView inventoryView)
+        {
+            views.Remove(inventoryView);
+        }
+
+        internal void RegisterView(InventoryView inventoryView)
+        {
+            views.Add(inventoryView);
+        }
+
+        internal void NotifyViews()
+        {
+            foreach (IInventoryObserver view in views)
+            {
+                view.OnInventoryChange();
+            }
         }
     }
 }

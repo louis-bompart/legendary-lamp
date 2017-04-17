@@ -18,13 +18,14 @@ namespace Inventory
         /// </summary>
         private string data;
         public Color textColor;
-
+        Rect screenRect;
         void Awake()
         {
             if (instance != null)
                 Destroy(instance);
             instance = this;
             gameObject.SetActive(false);
+            screenRect = new Rect(0f, 0f, Screen.width, Screen.height);
         }
 
         /// <summary>
@@ -33,6 +34,7 @@ namespace Inventory
         void Update()
         {
             gameObject.transform.position = Input.mousePosition;
+            //Do something about overlap off screen
         }
 
         /// <summary>
@@ -60,8 +62,9 @@ namespace Inventory
         /// </summary>
         public void ConstructDataString()
         {
-            data = "<color=#" + textColor.r.ToString() + textColor.g.ToString() + textColor.b.ToString() + textColor.a.ToString() + "><b>" + item.title + "</b></color>\n" + item.description;
+            data = "<color=#" + ColorUtility.ToHtmlStringRGB(textColor) + "><b>" + item.title + "</b></color>\n" + item.description;
             gameObject.transform.GetChild(0).GetComponent<Text>().text = data;
+            LayoutRebuilder.MarkLayoutForRebuild(this.transform as RectTransform);
         }
     }
 }

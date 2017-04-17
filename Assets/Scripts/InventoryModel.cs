@@ -13,7 +13,6 @@ namespace Inventory
         internal Dictionary<Item, int> items;
         private int size;
         internal ItemDatabase database;
-        public TextAsset textAsset;
         public enum Inventory
         {
             Ship,
@@ -23,7 +22,7 @@ namespace Inventory
 
         public void Awake()
         {
-            database = ItemDatabase.Instance(textAsset);
+            ItemDatabase.GetInstance(out database);
             items = new Dictionary<Item, int>();
             slots = new List<Slot>();
             reserved = new List<Slot>();

@@ -16,7 +16,6 @@ namespace Inventory
         }
         public Inventory inventoryType;
         private ItemDatabase database;
-        public TextAsset json;
 
         /// <summary>
         /// Add a certain amount of an item from the attached inventories if possible, does nothing otherwise.
@@ -198,7 +197,7 @@ namespace Inventory
 
         private void Awake()
         {
-            database = ItemDatabase.Instance(json);
+            ItemDatabase.GetInstance(out database);
             models = new List<InventoryModel>();
             List<InventoryModel> allModels = new List<InventoryModel>(FindObjectsOfType<InventoryModel>());
             switch (inventoryType)

@@ -2,14 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Inventory;
+using ItemNS;
 public class Initializer : MonoBehaviour {
     public GameObject slotView;
     public GameObject itemView;
-    private static bool used = false;
+    public TextAsset items;
+    public static bool used = false;
     private void Awake()
     {
-        if(!used)
+        Initialize();
+    }
+
+    public void Initialize()
+    {
+        if (!used)
         {
+            ItemDatabase.Initalize(items);
             used = true;
             SlotView.prefab = slotView;
             ItemView.prefab = itemView;

@@ -29,14 +29,18 @@ namespace ItemNS
             databaseIndexed.TryGetValue(id, out item);
             return item;
         }
+        public static bool GetInstance(out ItemDatabase itemDatabase)
+        {
+            itemDatabase = instance;
+            return itemDatabase == null;
+        }
 
-        public static ItemDatabase Instance(TextAsset json)
+        public static void Initalize(TextAsset json)
         {
             if (instance == null)
             {
                 new ItemDatabase(json);
             }
-            return instance;
         }
     }
 }

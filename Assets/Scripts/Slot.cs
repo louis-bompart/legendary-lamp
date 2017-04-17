@@ -39,7 +39,7 @@ namespace Inventory
 
         internal int RemainingSpace()
         {
-            return amount - item.stackSize;
+            return item.stackSize - amount;
         }
 
         internal bool IsEmpty()

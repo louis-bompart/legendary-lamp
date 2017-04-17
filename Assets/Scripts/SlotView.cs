@@ -44,7 +44,7 @@ namespace Inventory
             ItemView dragged = eventData.pointerDrag.GetComponent<ItemView>();
             SlotView other = dragged.currentSlot;
             dragged.currentSlot = this;
-            other.data.Swap(data);
+            data.Swap(other.data);
         }
     }
 }

@@ -18,23 +18,37 @@ namespace Inventory
         /// </summary>
         private string data;
         public Color textColor;
-        Rect screenRect;
+
         void Awake()
         {
+            screenRect = Camera.main.pixelRect;
             if (instance != null)
                 Destroy(instance);
             instance = this;
             gameObject.SetActive(false);
-            screenRect = new Rect(0f, 0f, Screen.width, Screen.height);
         }
-
+        Rect screenRect;
+        public Vector3 position;
+        public Vector2 dimension;
         /// <summary>
         /// the gameObject follows the mouse Position.
         /// </summary>
         void Update()
         {
-            gameObject.transform.position = Input.mousePosition;
-            //Do something about overlap off screen
+            Vector2 pivot = Vector2.zero;
+            position = Input.mousePosition;
+            Rect rect = GetComponent<RectTransform>().rect;
+            dimension = rect.size;
+            if (Input.mousePosition.x + rect.width > screenRect.max.x * .95f)
+            {
+                pivot.x = 1;
+            }
+            if (Input.mousePosition.y + rect.height > screenRect.max.y*.95f)
+            {
+                pivot.y = 1;
+            }
+            GetComponent<RectTransform>().pivot = pivot;
+            gameObject.transform.position = position;
         }
 
         /// <summary>

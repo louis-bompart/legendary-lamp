@@ -67,7 +67,7 @@ namespace Inventory
                     model.items[item] += amount;
                 else
                     model.items.Add(item, amount);
-                this.model.slots.Insert(posThis, this);
+                this.model.slots.Insert(Mathf.Min(posThis, this.model.slots.Count), this);
                 model.NotifyViews();
             }
             else
@@ -76,6 +76,8 @@ namespace Inventory
 
         internal void Swap(Slot other)
         {
+            if (other == this)
+                return;
             int posThis = this.model.slots.IndexOf(this);
             int posOther = other.model.slots.IndexOf(other);
             this.model.slots.Remove(this);
@@ -100,8 +102,8 @@ namespace Inventory
                 other.item = item;
                 other.amount = amount;
             }
-            this.model.slots.Insert(posThis, this);
-            other.model.slots.Insert(posOther, other);
+            this.model.slots.Insert(Mathf.Min(posThis, this.model.slots.Count), this);
+            other.model.slots.Insert(posOther, this);
             this.model.NotifyViews();
             other.model.NotifyViews();
         }
@@ -112,7 +114,7 @@ namespace Inventory
             this.model.slots.Remove(this);
             this.amount = 0;
             this.item = null;
-            this.model.slots.Insert(posThis, this);
+            this.model.slots.Insert(Mathf.Min(posThis, this.model.slots.Count), this);
             model.NotifyViews();
 
         }
@@ -133,8 +135,12 @@ namespace Inventory
                 model.NotifyViews();
             }
             model.items[item] -= amount;
-            this.model.slots.Insert(posThis, this);
+            this.model.slots.Insert(Mathf.Min(posThis, this.model.slots.Count), this);
             this.model.NotifyViews();
+        }
+        public override bool Equals(object obj)
+        {
+            return (obj as Slot).id == this.id;
         }
     }
 }

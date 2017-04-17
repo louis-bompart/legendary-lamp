@@ -1,0 +1,101 @@
+{
+	"database": [
+		{
+			"id": 100,
+			"title": "Titanium",
+			"price": 2,
+			"description": "A good and solid mineral which is required in many structures.",
+			"stackSize": 10,
+			"slug": "Titanium"
+			},
+		{
+			"id": 101,
+			"title": "Sulfrite",
+			"price": 2,
+			"description": "A mix of many rare elements which is required in laser manufacturing.",
+			"stackSize": 10,
+			"slug": "Sulfrite"
+			},
+		{
+			"id": 102,
+			"title": "Carbonite",
+			"price": 2,
+			"description": "Countains a big amount of carbon which is required in fuel manufacturing.",
+			"stackSize": 10,
+			"slug": "Carbonite"
+			},
+		{
+			"id": 103,
+			"title": "Monazite",
+			"price": 2,
+			"description": "Countains divers popular chemical elements. They are rare on Earth but common on Centaury.",
+			"stackSize": 10,
+			"slug": "Monazite"
+			},
+		{
+			"id": 104,
+			"title": "Kirazite",
+			"price": 2,
+			"description": "Recently discovered, it is now a fundamental element in supra luminic engines.",
+			"stackSize": 10,
+			"slug": "Kirazite"
+			},
+		{
+			"id": 105,
+			"title": "Peanutoïd",
+			"price": 2,
+			"description": "A weird peanut butter mineral that has great effects on brain abilities. Many blueprints were discovered since then.",
+			"stackSize": 10,
+			"slug": "Peanutoide"
+			},
+		{
+			"id": 200,
+			"title": "Hull hardener",
+			"price": 2,
+			"description": "Item required to upgrade ship's defense.",
+			"stackSize": 10,
+			"slug": "WeaponUpgrade"
+			},
+		{
+			"id": 201,
+			"title": "Afterburner",
+			"price": 2,
+			"description": "Item required to upgrade ship's weapon.",
+			"stackSize": 10,
+			"slug": "WeaponUpgrade"
+			},
+		{
+			"id": 202,
+			"title": "Overheated fluid",
+			"price": 2,
+			"description": "Item required to upgrade ship's mobility.",
+			"stackSize": 10,
+			"slug": "MobilityUpgrade"
+			},
+		{
+			"id": 210,
+			"title": "Shield hardener",
+			"price": 2,
+			"description": "Item required to upgrade base's defense.",
+			"stackSize": 10,
+			"slug": "MobilityUpgrade"
+			},
+		{
+			"id": 211,
+			"title": "Drone parts",
+			"price": 2,
+			"description": "Item required to upgrade base's weapon.",
+			"stackSize": 10,
+			"slug": "MobilityUpgrade"
+			},
+
+		{
+			"id": 212,
+			"title": "Nexus Core",
+			"price": 2,
+			"description": "Item required to upgrade base's core.",
+			"stackSize": 10,
+			"slug": "MobilityUpgrade"
+			}
+	]
+}

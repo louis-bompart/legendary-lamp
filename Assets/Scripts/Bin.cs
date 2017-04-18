@@ -10,7 +10,7 @@ namespace Inventory
         {
             ItemView dragged = eventData.pointerDrag.GetComponent<ItemView>();
             SlotView other = dragged.currentSlot;
-            other.data.ClearSlot();
+            Slot.GetSlotFromId(other.slotID).ClearSlot();
         }
     }
 }

@@ -9,16 +9,16 @@ namespace Inventory
     public class SlotView : MonoBehaviour, IDropHandler
     {
         public static GameObject prefab;
-        public Slot data;
+        public int slotID;
         public ItemView itemView;
         public InventoryView inventoryView;
 
-        public static SlotView Create(Slot data, GameObject parent, InventoryView inventoryView)
+        public static SlotView Create(int slotID, GameObject parent, InventoryView inventoryView)
         {
             GameObject toReturnGO = Instantiate(prefab);
             toReturnGO.transform.SetParent(parent.transform, false);
             SlotView toReturn = toReturnGO.GetComponent<SlotView>();
-            toReturn.data = data;
+            toReturn.slotID = slotID;
             toReturn.inventoryView = inventoryView;
             return toReturn;
         }
@@ -28,10 +28,12 @@ namespace Inventory
         }
         public void UpdateView()
         {
-            data = data.model.slots.Find(x => data.id == x.id);
             if (itemView != null)
-                Destroy(itemView);
-            if (!data.IsEmpty())
+            {
+                Destroy(itemView.gameObject);
+                itemView = null;
+            }
+            if (!Slot.GetSlotFromId(slotID).IsEmpty())
             {
                 ItemView itemView = ItemView.Create(this);
                 itemView.transform.SetParent(transform, false);
@@ -44,7 +46,7 @@ namespace Inventory
             ItemView dragged = eventData.pointerDrag.GetComponent<ItemView>();
             SlotView other = dragged.currentSlot;
             dragged.currentSlot = this;
-            data.Swap(other.data);
+            Slot.GetSlotFromId(slotID).Swap(Slot.GetSlotFromId(other.slotID));
         }
     }
 }

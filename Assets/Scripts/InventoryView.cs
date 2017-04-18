@@ -57,10 +57,9 @@ namespace Inventory
             {
                 Destroy(slotViews[i].gameObject);
             }
-            slotViews.Clear();
             foreach (Slot slot in model.slots)
             {
-                slotViews.Add(SlotView.Create(slot, gameObject, this));
+                slotViews.Add(SlotView.Create(slot.id, gameObject, this));
             }
         }
 
@@ -77,11 +76,10 @@ namespace Inventory
         }
         void IInventoryObserver.OnInventoryChange()
         {
-            LoadInventory();
-            //foreach (SlotView slot in slotViews)
-            //{
-            //    slot.UpdateView();
-            //}
+            foreach (SlotView slot in slotViews)
+            {
+                slot.UpdateView();
+            }
         }
     }
 }

@@ -14,6 +14,18 @@ namespace Inventory
         public InventoryModel model;
         private static IDManager idManager;
         internal int id;
+        private static Dictionary<int, Slot> mappedSlots;
+
+        internal static Slot GetSlotFromId(int id)
+        {
+            Slot toReturn = null;
+            mappedSlots.TryGetValue(id, out toReturn);
+            return toReturn;
+        }
+        private static Slot GetSlotFromSlot(Slot slot)
+        {
+            return GetSlotFromId(slot.id);
+        }
 
         public Slot(InventoryModel model, Item item = null, int amount = 0)
         {
@@ -23,6 +35,9 @@ namespace Inventory
             this.model = model;
             this.item = item;
             this.amount = amount;
+            if (mappedSlots == null)
+                mappedSlots = new Dictionary<int, Slot>();
+            mappedSlots.Add(id, this);
         }
 
         ~Slot()
@@ -48,7 +63,6 @@ namespace Inventory
         }
         internal void AddItem(Item item, int amount)
         {
-            model.FreeSlotReservation(this);
             if (item == null)
             {
                 Debug.LogError("Cannot add null as an item");
@@ -59,15 +73,12 @@ namespace Inventory
                 canDo = item.Equals(this.item);
             if (canDo)
             {
-                int posThis = this.model.slots.IndexOf(this);
-                model.slots.Remove(this);
-                this.item = item;
-                this.amount += amount;
+                GetSlotFromSlot(this).item = item;
+                GetSlotFromSlot(this).amount += amount;
                 if (model.items.ContainsKey(item))
                     model.items[item] += amount;
                 else
                     model.items.Add(item, amount);
-                this.model.slots.Insert(Mathf.Min(posThis, this.model.slots.Count), this);
                 model.NotifyViews();
             }
             else
@@ -78,43 +89,34 @@ namespace Inventory
         {
             if (other == this)
                 return;
-            int posThis = this.model.slots.IndexOf(this);
-            int posOther = other.model.slots.IndexOf(other);
-            this.model.slots.Remove(this);
 
-            other.model.slots.Remove(other);
             if (other.item == this.item)
             {
                 int tranferableAmount = Mathf.Min(other.amount, RemainingSpace());
-                other.amount -= tranferableAmount;
-                this.amount += tranferableAmount;
+                GetSlotFromSlot(other).amount -= tranferableAmount;
+                GetSlotFromSlot(this).amount += tranferableAmount;
                 if (other.amount == 0)
                 {
-                    other.item = null;
+                    GetSlotFromSlot(other).item = null;
                 }
             }
             else
             {
                 Item item = this.item;
                 int amount = this.amount;
-                this.amount = other.amount;
-                this.item = other.item;
-                other.item = item;
-                other.amount = amount;
+                GetSlotFromSlot(this).amount = other.amount;
+                GetSlotFromSlot(this).item = other.item;
+                GetSlotFromSlot(other).item = item;
+                GetSlotFromSlot(other).amount = amount;
             }
-            this.model.slots.Insert(Mathf.Min(posThis, this.model.slots.Count), this);
-            other.model.slots.Insert(posOther, this);
             this.model.NotifyViews();
             other.model.NotifyViews();
         }
 
         internal void ClearSlot()
         {
-            int posThis = this.model.slots.IndexOf(this);
-            this.model.slots.Remove(this);
-            this.amount = 0;
-            this.item = null;
-            this.model.slots.Insert(Mathf.Min(posThis, this.model.slots.Count), this);
+            GetSlotFromSlot(this).amount = 0;
+            GetSlotFromSlot(this).item = null;
             model.NotifyViews();
 
         }
@@ -125,18 +127,15 @@ namespace Inventory
                 Debug.LogError("Not enough " + item.title + " in this slot");
                 return;
             }
-            int posThis = this.model.slots.IndexOf(this);
-            this.model.slots.Remove(this);
             if (amount == this.amount)
                 ClearSlot();
             else
             {
-                this.amount -= amount;
+                GetSlotFromSlot(this).amount -= amount;
                 model.NotifyViews();
             }
             model.items[item] -= amount;
-            this.model.slots.Insert(Mathf.Min(posThis, this.model.slots.Count), this);
-            this.model.NotifyViews();
+            GetSlotFromSlot(this).model.NotifyViews();
         }
         public override bool Equals(object obj)
         {
